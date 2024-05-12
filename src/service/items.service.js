@@ -3,7 +3,9 @@ import db from "../lib/firebase/db";
 
 export const getAllItems = async () => {
   try {
-    const querySnapshot = await getDocs(collection(db, "items"));
+    const querySnapshot = await getDocs(
+      collection(db, "items").orderBy("", "asc")
+    );
     return querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
   } catch (error) {
     throw new Error(error);
