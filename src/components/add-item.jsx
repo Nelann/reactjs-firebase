@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { useCreateItem } from "../hooks";
+
+import { useCreateItem } from "@/hooks";
+
+import { Button } from "./ui/button";
 
 export default function AddItem() {
   const [item, setItem] = useState("");
@@ -16,13 +19,22 @@ export default function AddItem() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Add item"
-        value={item}
-        onChange={(e) => setItem(e.target.value)}
-      />
-      <button disabled={isPending}>{isPending ? "Loading..." : "Add"}</button>
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2">
+          <label htmlFor="item">Item</label>
+          <input
+            id="item"
+            type="text"
+            placeholder="Add item"
+            className="border border-gray-300 rounded-md p-2"
+            value={item}
+            onChange={(e) => setItem(e.target.value)}
+          />
+        </div>
+        <Button title="Add" disabled={isPending}>
+          {isPending ? "Loading..." : "Add"}
+        </Button>
+      </div>
     </form>
   );
 }
