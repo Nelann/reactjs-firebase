@@ -1,0 +1,14 @@
+/* tolong buatkan config css */
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
