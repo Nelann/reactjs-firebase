@@ -2,9 +2,9 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import Root from "@/pages/root";
 import HomePage from "@/pages/home/home-page";
-import PostsPage from "@/pages/posts/posts-page";
 import LoginPage from "@/pages/login/login-page";
 import RegisterPage from "@/pages/register/register-page";
+import TodosPage from "@/pages/todos/todos-page";
 
 const router = createBrowserRouter([
   {
@@ -16,11 +16,11 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "posts",
+        path: "todos",
         children: [
           {
             index: true,
-            element: <PostsPage />,
+            element: <TodosPage />,
           },
         ],
       },

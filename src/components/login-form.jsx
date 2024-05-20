@@ -2,13 +2,15 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { Button } from "./ui/button";
-import { useLogin } from "@/hooks";
+import { useGithubLogin, useGoogleLogin, useLogin } from "@/hooks";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const { login } = useLogin();
+  const { loginWithGoogle } = useGoogleLogin();
+  const { loginWithGithub } = useGithubLogin();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,7 +31,7 @@ export default function LoginForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="name@email.com"
-            className="border p-3 rounded-md"
+            className="p-3 border rounded-md"
           />
         </div>
         <div className="flex flex-col space-y-2">
@@ -40,7 +42,7 @@ export default function LoginForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
-            className="border p-3 rounded-md"
+            className="p-3 border rounded-md"
           />
         </div>
         <div>
@@ -56,8 +58,12 @@ export default function LoginForm() {
         </div>
         <p className="text-center">Or</p>
         <div className="flex flex-col gap-3">
-          <Button type="button">Continue with Google</Button>
-          <Button type="button">Continue with GitHub</Button>
+          <Button type="button" onClick={() => loginWithGoogle()}>
+            Continue with Google
+          </Button>
+          <Button type="button" onClick={() => loginWithGithub()}>
+            Continue with GitHub
+          </Button>
         </div>
       </div>
     </form>

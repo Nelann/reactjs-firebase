@@ -6,7 +6,7 @@ export default function Root() {
   return (
     <>
       <Header />
-      <main className="max-w-screen-lg mx-auto px-4">
+      <main className="max-w-screen-lg px-4 mx-auto mt-3">
         <Outlet />
       </main>
     </>
