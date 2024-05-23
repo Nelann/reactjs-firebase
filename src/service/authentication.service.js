@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
 } from "firebase/auth";
 
 import auth from "@/lib/firebase/auth";
@@ -21,9 +22,8 @@ githubProvider.setCustomParameters({
 
 export const login = async ({ email, password }) => {
   try {
-    const { user } = await signInWithEmailAndPassword(auth, email, password);
-
-    return user;
+    const data = await signInWithEmailAndPassword(auth, email, password);
+    return data?.user;
   } catch (error) {
     throw new Error(error);
   }
@@ -31,13 +31,8 @@ export const login = async ({ email, password }) => {
 
 export const register = async ({ email, password }) => {
   try {
-    const { user } = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-
-    return user;
+    const data = await createUserWithEmailAndPassword(auth, email, password);
+    return data?.user;
   } catch (error) {
     throw new Error(error);
   }
@@ -70,6 +65,14 @@ export const loginWithGithub = async () => {
 
     console.log(token);
     console.log(user);
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const logout = async () => {
+  try {
+    await signOut(auth);
   } catch (error) {
     throw new Error(error);
   }

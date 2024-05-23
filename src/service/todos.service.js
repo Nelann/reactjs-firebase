@@ -12,8 +12,9 @@ import db from "@/lib/firebase/db";
 export const getAllTodos = async () => {
   try {
     const todosRef = collection(db, "todos");
+    const q = query(todosRef);
 
-    const querySnapshot = await getDocs(query(todosRef));
+    const querySnapshot = await getDocs(q);
 
     return querySnapshot.docs.map((doc) => ({
       ...doc.data(),

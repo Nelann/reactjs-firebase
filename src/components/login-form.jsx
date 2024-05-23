@@ -1,23 +1,30 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+import { useLogin } from "@/hooks";
+
 import { Button } from "./ui/button";
-import { useGithubLogin, useGoogleLogin, useLogin } from "@/hooks";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { login } = useLogin();
-  const { loginWithGoogle } = useGoogleLogin();
-  const { loginWithGithub } = useGithubLogin();
+  const { login, isPending } = useLogin();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!email || !password) return;
 
-    await login({ email, password });
+    await login(
+      { email, password },
+      {
+        onSettled: () => {
+          setEmail("");
+          setPassword("");
+        },
+      }
+    );
   };
 
   return (
@@ -47,7 +54,7 @@ export default function LoginForm() {
         </div>
         <div>
           <Button type="submit" className="w-full">
-            SignIn
+            {isPending ? "Loggining..." : "Login"}
           </Button>
         </div>
         <div>
@@ -55,15 +62,6 @@ export default function LoginForm() {
           <span className="font-semibold">
             <Link to="/register">Register here.</Link>
           </span>
-        </div>
-        <p className="text-center">Or</p>
-        <div className="flex flex-col gap-3">
-          <Button type="button" onClick={() => loginWithGoogle()}>
-            Continue with Google
-          </Button>
-          <Button type="button" onClick={() => loginWithGithub()}>
-            Continue with GitHub
-          </Button>
         </div>
       </div>
     </form>

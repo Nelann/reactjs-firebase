@@ -11,10 +11,10 @@ export default function TodosPage() {
   const { deleteTodo, isPending: isPendingDeleteTodo } = useDeleteTodo();
   const { toggleTodo } = useToggleTodo();
 
-  const handleAddTodo = async () => {
+  const handleAddTodo = () => {
     if (!text) return;
 
-    await createTodo(text, {
+    createTodo(text, {
       onSettled: () => {
         setText("");
       },
@@ -50,8 +50,8 @@ export default function TodosPage() {
               <div className="flex flex-row items-center gap-2">
                 <button
                   title="done-task"
-                  onClick={async () => {
-                    await toggleTodo({
+                  onClick={() => {
+                    toggleTodo({
                       todoId: todo.id,
                       completed: !todo.completed,
                     });

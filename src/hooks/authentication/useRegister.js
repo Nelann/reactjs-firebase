@@ -1,24 +1,21 @@
 import { useNavigate } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 import { register as registerApi } from "@/service/authentication.service";
 
 export const useRegister = () => {
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const { mutate, isPending } = useMutation({
     mutationFn: async ({ email, password }) =>
       await registerApi({ email, password }),
-    onSuccess: (data, variables, context) => {
-      console.log(data);
-      console.log(variables);
-      console.log(context);
-
+    onSuccess: () => {
+      toast.success("Successfully register");
       navigate("/login", { replace: true });
     },
-    onError: (err) => {
-      console.error(err);
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 

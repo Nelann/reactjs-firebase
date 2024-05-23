@@ -15,7 +15,15 @@ export default function RegisterForm() {
 
     if (!email || !password) return;
 
-    await register({ email, password });
+    await register(
+      { email, password },
+      {
+        onSettled: () => {
+          setEmail("");
+          setPassword("");
+        },
+      }
+    );
   };
 
   return (
@@ -29,7 +37,7 @@ export default function RegisterForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="name@email.com"
-            className="border p-3 rounded-md"
+            className="p-3 border rounded-md"
           />
         </div>
         <div className="flex flex-col space-y-2">
@@ -40,7 +48,7 @@ export default function RegisterForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
-            className="border p-3 rounded-md"
+            className="p-3 border rounded-md"
           />
         </div>
         <div>
@@ -53,11 +61,6 @@ export default function RegisterForm() {
           <span className="font-semibold">
             <Link to="/login">Login here.</Link>
           </span>
-        </div>
-        <p className="text-center">Or</p>
-        <div className="flex flex-col gap-3">
-          <Button type="button">Continue with Google</Button>
-          <Button type="button">Continue with GitHub</Button>
         </div>
       </div>
     </form>

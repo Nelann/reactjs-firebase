@@ -1,4 +1,4 @@
 export * from "./useLogin";
 export * from "./useRegister";
 export * from "./useGoogleLogin";
-export * from "./useGithubLogin";
+export * from "./useLogout";
