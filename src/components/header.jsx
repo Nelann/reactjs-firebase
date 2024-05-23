@@ -1,24 +1,12 @@
 import { Link } from "react-router-dom";
 
-import auth from "@/lib/firebase/auth";
-
 import { useLogout } from "@/hooks";
+import { useUser } from "@/hooks";
 
 import { Button } from "./ui/button";
-import { useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { useEffect } from "react";
 
 export default function Header() {
-  const [currentUser, setCurrentUser] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-    });
-
-    return () => unsubscribe;
-  }, []);
+  const { user } = useUser();
 
   const { logout } = useLogout();
 
@@ -28,7 +16,7 @@ export default function Header() {
         <h1 className="text-2xl font-semibold">
           <Link to="/">Home</Link>
         </h1>
-        {currentUser ? (
+        {user ? (
           <div className="flex flex-row items-center space-x-3">
             <Link to="/todos" className="text-lg font-semibold">
               Todos
