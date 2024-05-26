@@ -6,13 +6,18 @@ import {
   getDocs,
   query,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import db from "@/lib/firebase/db";
+import auth from "@/lib/firebase/auth";
 
 export const getAllTodos = async () => {
   try {
+    const currentUserId = auth.currentUser.uid;
+
     const todosRef = collection(db, "todos");
-    const q = query(todosRef);
+
+    const q = query(todosRef, where("ownerId", "==", currentUserId));
 
     const querySnapshot = await getDocs(q);
 
@@ -25,12 +30,15 @@ export const getAllTodos = async () => {
   }
 };
 
-export const createTodo = async (text) => {
+export const createTodo = async ({ text, ownerId }) => {
   try {
     const todosRef = collection(db, "todos");
+    const createdAt = new Date().toISOString();
 
     await addDoc(todosRef, {
       text,
+      ownerId,
+      createdAt,
     });
   } catch (error) {
     throw new Error(error);
@@ -40,9 +48,11 @@ export const createTodo = async (text) => {
 export const updateTodo = async ({ todoId, text }) => {
   try {
     const todoRef = doc(db, "todos", todoId);
+    const createdAt = new Date().toISOString();
 
     await updateDoc(todoRef, {
       text,
+      createdAt,
     });
   } catch (error) {
     throw new Error(error);

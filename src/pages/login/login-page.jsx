@@ -7,7 +7,7 @@ export default function LoginPage() {
   const { loginWithGoogle } = useGoogleLogin();
 
   return (
-    <section className="my-10">
+    <section className="max-w-6xl px-4 py-10 mx-auto">
       <div className="mb-3 space-y-2 text-center">
         <h2 className="text-3xl font-bold">ReactJs Firebase</h2>
         <p>Welcome Back!</p>

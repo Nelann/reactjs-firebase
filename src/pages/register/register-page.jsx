@@ -7,11 +7,10 @@ export default function RegisterPage() {
   const { loginWithGoogle } = useGoogleLogin();
 
   return (
-    <section>
+    <section className="max-w-6xl px-4 py-10 mx-auto">
       <div className="mb-3 space-y-2 text-center">
         <h2 className="text-3xl font-bold">ReactJs Firebase</h2>
       </div>
-
       <div className="flex flex-col gap-4">
         <div>
           <RegisterForm />

@@ -6,8 +6,10 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 import auth from "@/lib/firebase/auth";
+import db from "@/lib/firebase/db";
 
 const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
@@ -19,6 +21,34 @@ googleProvider.setCustomParameters({
 githubProvider.setCustomParameters({
   prompt: "select_account",
 });
+
+export const createUserFromAuth = async (
+  userAuth,
+  additionalInformation = {}
+) => {
+  if (!userAuth) return;
+
+  const userDocRef = doc(db, "users", userAuth.uid);
+  const userSnapshot = await getDoc(userDocRef);
+
+  if (!userSnapshot.exists()) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+
+    try {
+      await setDoc(userDocRef, {
+        displayName,
+        email,
+        createdAt,
+        ...additionalInformation,
+      });
+    } catch (error) {
+      console.log("error creating the user", error.message);
+    }
+  }
+
+  return userSnapshot;
+};
 
 export const login = async ({ email, password }) => {
   try {
@@ -47,8 +77,10 @@ export const loginWithGoogle = async () => {
     const token = credential.accessToken;
     const user = result.user;
 
-    console.log(token);
-    console.log(user);
+    return {
+      ...user,
+      token,
+    };
   } catch (error) {
     throw new Error(error);
   }

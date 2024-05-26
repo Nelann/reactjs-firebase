@@ -1,11 +1,18 @@
 import { useState } from "react";
 import { XIcon, SquareCheckBigIcon } from "lucide-react";
 
-import { useCreateTodo, useDeleteTodo, useTodos, useToggleTodo } from "@/hooks";
+import {
+  useCreateTodo,
+  useDeleteTodo,
+  useTodos,
+  useToggleTodo,
+  useUser,
+} from "@/hooks";
 
 export default function TodosPage() {
   const [text, setText] = useState("");
 
+  const { user } = useUser();
   const { data: todos, isLoading, isSuccess, isError, error } = useTodos();
   const { createTodo, isPending: isPendingCreateTodo } = useCreateTodo();
   const { deleteTodo, isPending: isPendingDeleteTodo } = useDeleteTodo();
@@ -14,11 +21,14 @@ export default function TodosPage() {
   const handleAddTodo = () => {
     if (!text) return;
 
-    createTodo(text, {
-      onSettled: () => {
-        setText("");
-      },
-    });
+    createTodo(
+      { text, ownerId: user.uid },
+      {
+        onSettled: () => {
+          setText("");
+        },
+      }
+    );
   };
 
   let content;
@@ -34,7 +44,7 @@ export default function TodosPage() {
   if (isSuccess) {
     content = (
       <div className="grid grid-cols-1 gap-3">
-        {todos.length > 0 &&
+        {todos.length > 0 ? (
           todos.map((todo) => (
             <div
               key={todo.id}
@@ -70,13 +80,18 @@ export default function TodosPage() {
                 </button>
               </div>
             </div>
-          ))}
+          ))
+        ) : (
+          <p>
+            <i>Not found todos</i>
+          </p>
+        )}
       </div>
     );
   }
 
   return (
-    <section className="space-y-3">
+    <section className="max-w-6xl px-4 py-8 mx-auto space-y-3">
       <div>
         <h3 className="text-xl font-medium">TodoList hari ini:</h3>
       </div>

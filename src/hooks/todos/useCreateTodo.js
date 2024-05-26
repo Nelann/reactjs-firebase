@@ -6,7 +6,8 @@ export const useCreateTodo = () => {
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (text) => await createTodoApi(text),
+    mutationFn: async ({ text, ownerId }) =>
+      await createTodoApi({ text, ownerId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
