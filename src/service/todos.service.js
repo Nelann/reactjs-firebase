@@ -3,6 +3,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   query,
   updateDoc,
@@ -11,7 +12,7 @@ import {
 import db from "@/lib/firebase/db";
 import auth from "@/lib/firebase/auth";
 
-export const getAllTodos = async () => {
+export const getTodos = async () => {
   try {
     const currentUserId = auth.currentUser.uid;
 
@@ -25,6 +26,22 @@ export const getAllTodos = async () => {
       ...doc.data(),
       id: doc.id,
     }));
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const getTodo = async (todoId) => {
+  try {
+    const todoRef = doc(db, "todos", todoId);
+
+    const todoSnapshot = await getDoc(todoRef);
+
+    if (!todoSnapshot.exists()) {
+      throw new Error("Todo not found");
+    }
+
+    return todoSnapshot.data();
   } catch (error) {
     throw new Error(error);
   }

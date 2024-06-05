@@ -13,7 +13,9 @@ export default function TodosPage() {
   const [text, setText] = useState("");
 
   const { user } = useUser();
+
   const { data: todos, isLoading, isSuccess, isError, error } = useTodos();
+
   const { createTodo, isPending: isPendingCreateTodo } = useCreateTodo();
   const { deleteTodo, isPending: isPendingDeleteTodo } = useDeleteTodo();
   const { toggleTodo } = useToggleTodo();
